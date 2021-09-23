@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.delivery.user">
+	<select id="getForm" resultType="user">
+		select 
+			#{loginApi} as login_api, 
+			#{userid} as userid, 
+			#{username} as username, 
+			#{email} as email, 
+			#{photo} as photo
+	</select>
+	<select id="getIdCheck" resultType="boolean">
+		select count(*)
+		from member 
+		where login_api = #{loginApi} 
+			and userid = #{userid}
+	</select>
+	<insert id="insertUser">
+		insert into member (login_api, userid, username, email, photo)
+		values (#{loginApi}, #{userid}, #{username}, #{email}, #{photo})
+	</insert>
+	<select id="getUSer" resultType="user">
+		select * from member 
+		where login_api=#{loginApi} and userid=#{userid}
+	</select>
+</mapper>
