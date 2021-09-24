@@ -9,64 +9,29 @@
 <style>
 
 body{
-	padding: 30px
-}
-#google{
-	padding-bottom: 8px;
-	font-weight : 900 ; 
-}
-
-#apple{
-	padding-bottom: 8px;
-	font-weight : 900 ; 
-}
-.container{
-		  min-height: 70vh ;
-		  display: flex ;
-		  justify-content: center ;
-		  align-items: center ;
-		  font-family: 'Roboto', sans-serif ;
-		  padding: 12px;
-}
-
-#emailField{
-	width:100%;
-	margin-right: 3px
-}
-#pwField{
-	width:100%;
-	margin-left: 3px
-}
-.text{
-	display:flex;
-}
-.field{
-justify-content:center;
-}
-.register{
-	display: flex;
-	margin-bottom: 10px;
+	padding: 30px ;
 }
 
 .login{
-	justify-content:center;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.icon{
+	width:20px ;
+}
+
+.row > div{
+    display: flex;
+    align-items: center;
 }
 
 #register_text{
 	font-size:20px;
 }
 
-#googleLogin, #appleLogin{
-width: 70%;
-margin-bottom: 10px;
-}
-.google{
-display:flex;
-}
-
-.apple {
-justify-content: center;
-}
 
 
 </style>
@@ -81,16 +46,10 @@ justify-content: center;
 
 <!-- for using naver API script -->
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-<script>
-Kakao.init('90e74cc683cbd55148d46e0ef4f4fa6c'); //발급받은 키 중 javascript키를 사용해준다.
-console.log(Kakao.isInitialized()); // sdk초기화여부판단
-
-</script>
 
 </head>
 <body>
-	<%@ include file="/common/inc/loginHeader.jsp"%>
-	<div class="container">
+	<div class="login">
 		<form action="loginOk" method="post" id="loginForm">
 			<input type="hidden" name="loginApi" id="loginApi"/>
 			<input type="hidden" name="userid" id="userid"/>
@@ -98,25 +57,25 @@ console.log(Kakao.isInitialized()); // sdk초기화여부판단
 			<input type="hidden" name="email" id="email"/>
 			<input type="hidden" name="photo" id="photo"/>
 			
-			<div id="register_text">Login</div>
-			
-			<div class ="google apple">
+			<div class="row">
+				<img alt="Main Icon" src="./img/mainIcon.jpg">
+			</div>
+			<div class="row">
+				<span id="register_text">대학교 키워드 알리미</span>
+			</div>
+			<div class="row">
 				<div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="googleLogin">
-					<span class="material-icons">G</span> google로 계속하기
+					<img class="icon" alt="Google Icon" src="./img/google.png"><span> 구글 계정으로 계속하기</span>
 				</div>
 			</div>
-			<div class ="google apple">
-				<div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="kakaoLogin()">
-					<span class="material-icons">K</span> kakao로 계속하기
-				</div>
-			</div>
-			<div class ="google apple">
+			<div class="row">
 				<div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="naverIdLogin_loginButton">
-					<span class="material-icons">N</span> naver로 계속하기
+					<img class="icon" alt="Naver Icon" src="./img/naver.png"><span> 네이버 계정으로 계속하기</span>
 				</div>
 			</div>
 		</form>
 	</div>
+
 	<%@ include file="/common/inc/footer.jsp"%>
 	
 <script>
@@ -149,50 +108,6 @@ function onSignIn(googleUser) {
 function connectionError(e){		
 	console.log(e);
 }
-</script>
-
-<script>
-
-//카카오로그인
-function kakaoLogin() {
-    Kakao.Auth.login({
-      success: function (response) {
-        Kakao.API.request({
-          url: '/v2/user/me',
-          success: function (response) {
-       	     document.getElementById('loginApi').value = 'Kakao' ;
-       	     document.getElementById('userid').value = response.id;
-             document.getElementById('username').value = response.properties.nickname ;
-          	 document.getElementById('email').value = response.kakao_account.email ;
-          	 document.getElementById('photo').value = response.properties.thumbnail_image ;
-
-          	 document.getElementById('loginForm').submit();
-          },
-          fail: function (error){
-        	  console.log(error) ;
-          }
-        }) ;
-      },
-      fail: function (error){
-    	  console.log(error) ;
-      }
-    })
-  }
-// //카카오로그아웃  
-// function kakaoLogout() {
-//     if (Kakao.Auth.getAccessToken()) {
-//       Kakao.API.request({
-//         url: '/v1/user/unlink',
-//         success: function (response) {
-//         	console.log(response)
-//         },
-//         fail: function (error) {
-//           console.log(error)
-//         },
-//       })
-//       Kakao.Auth.setAccessToken(undefined)
-//     }
-//   }  
 </script>
 
 <script>

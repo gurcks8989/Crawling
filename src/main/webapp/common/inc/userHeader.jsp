@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" import="com.spring.delivery.user.UserVO"%>
+<%@ page contentType="text/html; charset=UTF-8" import="com.spring.user.UserVO"%>
 <!--Main Navigation-->
 <!-- Loading -->
 

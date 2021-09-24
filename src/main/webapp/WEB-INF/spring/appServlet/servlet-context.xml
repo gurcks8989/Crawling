@@ -22,18 +22,17 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<beans:bean id="LoginCheckInterceptor" class="com.spring.delivery.user.LoginCheckInterceptor"/>
+	<beans:bean id="LoginCheckInterceptor" class="com.spring.user.LoginCheckInterceptor"/>
 	
 	<interceptors>
 		<interceptor>
 			<mapping path="/**"/>
 			<exclude-mapping path="/data/**" />
 			<exclude-mapping path="/img/**" />
-			<exclude-mapping path="/login/*" />
-			<exclude-mapping path="/top/top" />
+			<exclude-mapping path="/" />
 			<beans:ref bean="LoginCheckInterceptor"/>
 		</interceptor>
 	</interceptors> 
 	
-	<context:component-scan base-package="com.spring.delivery" />
+	<context:component-scan base-package="com.spring" />
 </beans:beans>

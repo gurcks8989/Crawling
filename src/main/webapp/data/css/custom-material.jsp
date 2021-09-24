@@ -43,4 +43,15 @@
 	.mdl-mega-footer__bottom-section, .mdl-mega-footer--bottom-section{
     	flex: auto;
    	}
+   	
+	.row{
+		padding: 8px;
+		display:flex;
+		justify-content: center;
+	}
+	
+	footer a:link { color: #95b8d1; text-decoration: none;}
+	footer a:visited { color: #95b8d1; text-decoration: none;}
+	footer a:hover { color: #809bce; text-decoration: underline;}
+
 </style>
