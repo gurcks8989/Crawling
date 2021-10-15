@@ -1,4 +1,4 @@
-package com.spring.delivery.user;
+package com.spring.user;
 
 public class UserVO {
 	private String loginApi;

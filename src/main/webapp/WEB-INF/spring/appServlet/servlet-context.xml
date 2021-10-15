@@ -6,6 +6,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+	
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -22,7 +23,10 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<beans:bean id="LoginCheckInterceptor" class="com.spring.user.LoginCheckInterceptor"/>
+	<!-- NaverLoginBO Class에 대한 Bean설정 추가 -->
+	<beans:bean id="naverLoginBO" class="com.spring.login.NaverLoginBO" />
+	
+	<beans:bean id="LoginCheckInterceptor" class="com.spring.login.LoginCheckInterceptor"/>
 	
 	<interceptors>
 		<interceptor>
@@ -30,9 +34,14 @@
 			<exclude-mapping path="/data/**" />
 			<exclude-mapping path="/img/**" />
 			<exclude-mapping path="/" />
+			<exclude-mapping path="/login" />
+			<exclude-mapping path="/loginOk" />
+			<exclude-mapping path="/logout" />
+			<exclude-mapping path="/naver_callback" />
 			<beans:ref bean="LoginCheckInterceptor"/>
 		</interceptor>
 	</interceptors> 
 	
 	<context:component-scan base-package="com.spring" />
+	<context:property-placeholder location="classpath:config/*"/>
 </beans:beans>

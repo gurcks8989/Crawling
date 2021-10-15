@@ -1,22 +1,24 @@
-package com.spring.delivery.user;
+package com.spring.login;
 
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod; 
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.ui.Model;
+import com.spring.user.UserServiceImpl;
+import com.spring.user.UserVO; 
 
 @Controller
-@RequestMapping(value="/login")
 public class LoginController {
 
 	@Autowired
 	UserServiceImpl service;
+	
 
-	@RequestMapping(value="/login", method = RequestMethod.GET)
-	public String login() {
-		return "login";
+	@RequestMapping(value="/", method = RequestMethod.GET)
+	public String login(Model model,HttpSession session) {
+		return "login/login";
 	}
 	
 	@RequestMapping(value="/loginOk", method = RequestMethod.POST)
@@ -29,7 +31,7 @@ public class LoginController {
 		
 		if(form == null) {
 			System.out.println("login fail! - form data is empty");
-			returnURL = "redirect:../login/login" ;
+			returnURL = "redirect:../" ;
 		}
 		else {
 			System.out.println("API   : " + form.getLoginApi());
@@ -46,12 +48,12 @@ public class LoginController {
 			if(loginvo != null) { 	//login success
 				System.out.println("login success!") ;
 				session.setAttribute("login", loginvo);
-				returnURL = "redirect:../top/main" ;
+				returnURL = "redirect:../handong" ;
 				
 			}
 			else {					// login fail
 				System.out.println("login fail! - not exist user in db");
-				returnURL = "redirect:../login/login" ;
+				returnURL = "redirect:../" ;
 			}
 		}
 		return returnURL ;
@@ -61,7 +63,7 @@ public class LoginController {
 	@RequestMapping(value="/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:../top/top";
+		return "redirect:../";
 	}
 		
 }

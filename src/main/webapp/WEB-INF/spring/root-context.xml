@@ -12,12 +12,22 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 	
 	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations"> 
+			<list>
+				<value>classpath:config/db.properties</value>
+				<value>classpath:config/api.properties</value>
+			</list>
+		</property>
+        <property name="fileEncoding" value="UTF-8" />
+    </bean>
+    
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
-		<property name="url" value="jdbc:mariadb://gurcks8989.cafe24.com/gurcks8989?autoReconnect=true"></property>
-		<property name="username" value="gurcks8989"></property>
-		<property name="password" value="handong1"></property>
+		<property name="driverClassName" value="${db.driver}"/>
+		<property name="url" value="${db.url}"></property>
+		<property name="username" value="${db.username}"></property>
+		<property name="password" value="${db.password}"></property>
 	</bean>
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -25,7 +35,7 @@
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
 		<property name="mapperLocations" value="classpath:mappers/*-mapper.xml"/>		
 	</bean>
-	
+
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>

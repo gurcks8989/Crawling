@@ -1,4 +1,4 @@
-package com.spring.delivery.user;
+package com.spring.login;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +15,7 @@ public class LoginCheckInterceptor extends HandlerInterceptorAdapter
 		HttpSession session = request.getSession() ;
 		Object obj = session.getAttribute("login") ;
 		if(obj == null) {
-			response.sendRedirect(request.getContextPath() + "/login/login");
+			response.sendRedirect(request.getContextPath() + "/");
 			return false ;
 		}
 		return true ;		

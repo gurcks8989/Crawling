@@ -28,6 +28,10 @@ body{
     align-items: center;
 }
 
+#title{
+	margin-bottom : 10px ;
+}
+
 #register_text{
 	font-size:20px;
 }
@@ -40,9 +44,6 @@ body{
 <meta name ="google-signin-client_id" content="757781982964-lfd3nk916jv46qmf66npttq8q0fvd296.apps.googleusercontent.com">
 <!-- for using google API script -->
 <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
-
-<!-- for using kakao API script -->
-<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
 <!-- for using naver API script -->
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
@@ -57,11 +58,13 @@ body{
 			<input type="hidden" name="email" id="email"/>
 			<input type="hidden" name="photo" id="photo"/>
 			
-			<div class="row">
-				<img alt="Main Icon" src="./img/mainIcon.jpg">
-			</div>
-			<div class="row">
-				<span id="register_text">대학교 키워드 알리미</span>
+			<div id="title">
+				<div class="row">
+					<img alt="Main Icon" src="./img/mainIcon.jpg">
+				</div>
+				<div class="row">
+					<span id="register_text">대학 공지 키워드 알리미</span>
+				</div>
 			</div>
 			<div class="row">
 				<div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="googleLogin">
@@ -69,7 +72,7 @@ body{
 				</div>
 			</div>
 			<div class="row">
-				<div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="naverIdLogin_loginButton">
+				<div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="naverIdLogin">
 					<img class="icon" alt="Naver Icon" src="./img/naver.png"><span> 네이버 계정으로 계속하기</span>
 				</div>
 			</div>
@@ -79,6 +82,16 @@ body{
 	<%@ include file="/common/inc/footer.jsp"%>
 	
 <script>
+
+function onSignIn(profile, method) {
+    document.getElementById('loginApi').value = method ;
+    document.getElementById('userid').value = profile.getId();
+    document.getElementById('username').value = profile.getName() ;
+    document.getElementById('email').value = profile.getEmail() ;
+
+    document.getElementById('loginForm').submit();
+}
+
 //처음 실행하는 함수
 function init() {
 	gapi.load('auth2', function() {
@@ -90,19 +103,13 @@ function init() {
 		options.setScope('email profile openid');
         // 인스턴스의 함수 호출 - element에 로그인 기능 추가
         // GgCustomLogin은 li태그안에 있는 ID, 위에 설정한 options와 아래 성공,실패시 실행하는 함수들
-		gapi.auth2.getAuthInstance().attachClickHandler('googleLogin', options, onSignIn, connectionError);
+		gapi.auth2.getAuthInstance().attachClickHandler('googleLogin', options, onGoogleSignIn, connectionError);
 	})
 }
 
-function onSignIn(googleUser) {
+function onGoogleSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
-    document.getElementById('loginApi').value = 'Google' ;
-    document.getElementById('userid').value = profile.getId();
-    document.getElementById('username').value = profile.getName() ;
-    document.getElementById('email').value = profile.getEmail() ;
-    document.getElementById('photo').value = profile.getImageUrl() ;
-
-    document.getElementById('loginForm').submit();
+	onSignIn(profile, 'Google') ;
 }
 
 function connectionError(e){		
@@ -111,13 +118,14 @@ function connectionError(e){
 </script>
 
 <script>
-
 var naverLogin = new naver.LoginWithNaverId(
 		{
-			clientId: "uqK6tnfeBYHBfHgrPdiX", //내 애플리케이션 정보에 cliendId를 입력해줍니다.
-			callbackUrl: "http://localhost:8080/Delivery_Crew/login/login", // 내 애플리케이션 API설정의 Callback URL 을 입력해줍니다.
+			clientId: "Rqhf62OB8KrndPR2V5CU", //내 애플리케이션 정보에 cliendId를 입력해줍니다.
+			secret: "H5jdQj1fLL", //내 애플리케이션 정보에 secret를 입력해줍니다.
+			callbackUrl: "http://localhost:8080/keyword/", // 내 애플리케이션 API설정의 Callback URL 을 입력해줍니다.
 			isPopup: false,
-			callbackHandle: true
+			callbackHandle: true,
+			loginButton: {color: "green", type: 3, height: 40} /* 로그인 버튼의 타입을 지정 */
 		}
 	);	
 
@@ -135,6 +143,10 @@ window.addEventListener('load', function () {
 				naverLogin.reprompt();
 				return;
 			}
+
+        	onSignIn(naverLogin.user, 'Naver') ;
+            alert(naverLogin.user.getName());
+            alert(naverLogin.user.getEmail());
 		} else {
 			console.log("callback 처리에 실패하였습니다.");
 		}
@@ -156,6 +168,7 @@ function naverLogout() {
 		closePopUp();
 		}, 1000);
 }
+
 </script>
 </body>
 </html>
