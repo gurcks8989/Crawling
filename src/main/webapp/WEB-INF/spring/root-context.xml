@@ -16,7 +16,8 @@
 		<property name="locations"> 
 			<list>
 				<value>classpath:config/db.properties</value>
-				<value>classpath:config/api.properties</value>
+				<value>classpath:config/hisnet.properties</value>
+<!-- 				<value>classpath:config/api.properties</value> -->
 			</list>
 		</property>
         <property name="fileEncoding" value="UTF-8" />
