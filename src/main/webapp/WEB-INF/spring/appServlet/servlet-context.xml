@@ -23,9 +23,6 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<!-- NaverLoginBO Class에 대한 Bean설정 추가 -->
-	<beans:bean id="naverLoginBO" class="com.spring.login.NaverLoginBO" />
-	
 	<beans:bean id="LoginCheckInterceptor" class="com.spring.login.LoginCheckInterceptor"/>
 	
 	<interceptors>

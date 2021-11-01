@@ -39,15 +39,11 @@ body{
 
 
 </style>
-
-<!-- Add own OAuth2.0 client ID in content-->
-<meta name ="google-signin-client_id" content="757781982964-lfd3nk916jv46qmf66npttq8q0fvd296.apps.googleusercontent.com">
 <!-- for using google API script -->
 <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
-
+ 
 <!-- for using naver API script -->
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-
 </head>
 <body>
 	<div class="login">
@@ -95,12 +91,16 @@ function onSignIn(profile, method) {
 //처음 실행하는 함수
 function init() {
 	gapi.load('auth2', function() {
-	    /* Ready. Make a call to gapi.auth2.init or some other API */
-		gapi.auth2.init();
+	    //Ready. Make a call to gapi.auth2.init or some other API
+		auth2 = gapi.auth2.init({
+			client_id: '312316665113-ffktkoeu66githas66n2g89uik460ebr.apps.googleusercontent.com',
+	        // 추가는 Oauth 승인 권한 추가 후 띄어쓰기 기준으로 추가
+			scope: 'email profile openid',
+			ux_mode: 'redirect',
+			redirect_uri: 'http://localhost:8080/keyword/'
+		});
 		options = new gapi.auth2.SigninOptionsBuilder();
 		options.setPrompt('select_account');
-        // 추가는 Oauth 승인 권한 추가 후 띄어쓰기 기준으로 추가
-		options.setScope('email profile openid');
         // 인스턴스의 함수 호출 - element에 로그인 기능 추가
         // GgCustomLogin은 li태그안에 있는 ID, 위에 설정한 options와 아래 성공,실패시 실행하는 함수들
 		gapi.auth2.getAuthInstance().attachClickHandler('googleLogin', options, onGoogleSignIn, connectionError);
@@ -138,7 +138,7 @@ window.addEventListener('load', function () {
     		
 			console.log(naverLogin.user); 
     		
-            if( email == undefined || email == null) {
+            if(email == undefined || email == null) {
 				alert("이메일은 필수정보입니다. 정보제공을 동의해주세요.");
 				naverLogin.reprompt();
 				return;
