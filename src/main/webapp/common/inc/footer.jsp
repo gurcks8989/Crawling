@@ -5,5 +5,5 @@
 </footer>
 
 <!-- Required Material Web JavaScript library -->
-<script type="text/javascript" src="../data/js/material.js"></script>
+<script type="text/javascript" src="./data/js/material.js"></script>
 

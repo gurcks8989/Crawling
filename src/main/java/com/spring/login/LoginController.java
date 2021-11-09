@@ -31,14 +31,13 @@ public class LoginController {
 		
 		if(form == null) {
 			System.out.println("login fail! - form data is empty");
-			returnURL = "redirect:../" ;
+			returnURL = "redirect:../keyword" ;
 		}
 		else {
 			System.out.println("API   : " + form.getLoginApi());
 			System.out.println("name  : " + form.getUsername());
 			System.out.println("id    : " + form.getUserid());
 			System.out.println("email : " + form.getEmail());
-			System.out.println("photo : " + form.getPhoto());
 			
 			if(!service.getIdCheck(vo))
 				service.insertUser(vo) ;
@@ -48,12 +47,12 @@ public class LoginController {
 			if(loginvo != null) { 	//login success
 				System.out.println("login success!") ;
 				session.setAttribute("login", loginvo);
-				returnURL = "redirect:../handong" ;
+				returnURL = "redirect:../keyword/handong" ;
 				
 			}
 			else {					// login fail
 				System.out.println("login fail! - not exist user in db");
-				returnURL = "redirect:../" ;
+				returnURL = "redirect:../keyword" ;
 			}
 		}
 		return returnURL ;
@@ -62,8 +61,17 @@ public class LoginController {
 	//logout part
 	@RequestMapping(value="/logout")
 	public String logout(HttpSession session) {
+		UserVO loginvo = (UserVO)session.getAttribute("login") ;
+		// Google Logout
+		if("Google".equals(loginvo.getLoginApi())) {
+			
+		}
+		// Naver Logout
+		else if("Naver".equals(loginvo.getLoginApi())) {
+			System.out.println("Naver") ;
+		}
 		session.invalidate();
-		return "redirect:../";
+		return "redirect:../keyword";
 	}
 		
 }

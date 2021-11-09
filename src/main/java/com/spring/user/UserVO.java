@@ -5,9 +5,8 @@ public class UserVO {
 	private String userid;
 	private String username;
 	private String email;
-	private String photo;
 	
-
+	
 	public String getLoginApi() {
 		return loginApi;
 	}
@@ -32,12 +31,4 @@ public class UserVO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getPhoto() {
-		return photo;
-	}
-	public void setPhoto(String photo) {
-		this.photo = photo;
-	}
-	
-
 }

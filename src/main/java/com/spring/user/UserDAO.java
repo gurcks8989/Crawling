@@ -11,19 +11,19 @@ public class UserDAO {
 	SqlSessionTemplate sqlSession;
 
 	public UserVO getForm(UserVO vo) {
-		return sqlSession.selectOne("com.spring.delivery.user.getForm", vo);	
+		return sqlSession.selectOne("com.spring.user.getForm", vo);	
 	}
 
 	public boolean getIdCheck(UserVO vo) {
-		return sqlSession.selectOne("com.spring.delivery.user.getIdCheck", vo);	
+		return sqlSession.selectOne("com.spring.user.getIdCheck", vo);	
 	}
 	
 	public int insertUser(UserVO vo) {
-		return sqlSession.insert("com.spring.delivery.user.insertUser", vo) ;
+		return sqlSession.insert("com.spring.user.insertUser", vo) ;
 	}
 		
 	public UserVO getUser(UserVO vo) {
-		return sqlSession.selectOne("com.spring.delivery.user.getUSer", vo);	
+		return sqlSession.selectOne("com.spring.user.getUSer", vo);	
 	}
 	
 }

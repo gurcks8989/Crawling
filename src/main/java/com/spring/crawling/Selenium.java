@@ -1,35 +1,36 @@
 package com.spring.crawling;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.Alert;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class Selenium {
+public class Selenium {	    
+//	@Value("${hisnet.id}")
+//    public static String login_id ;
+//	
+//	@Value("${hisnet.password}")
+//    public static String login_pw ;
+    
 	public static void main(String[] args) {
+		//WebDriver 설정
+		WebDriverManager.chromedriver().setup() ;
 		Selenium selTest = new Selenium();
 		selTest.login();
 		selTest.crawling();
 	}
- 
-	//WebDriver 설정
-	private WebDriver driver;
+	private WebDriver driver  ;
 	private String url;
-    
-	//Properties 설정
-	public static String WEB_DRIVER_ID = "webdriver.chrome.driver";
-	public static String WEB_DRIVER_PATH = "/Users/hyeokchani/Java/chromedriver";
+
 	public static String TEST_URL = "https://hisnet.handong.edu" ;
 
 	public Selenium() {
-		// System Property SetUp
-		System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
-        
-        // WebDriver 옵션 설정
+		// WebDriver 옵션 설정
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");          // 최대크기로
         options.addArguments("--headless");                 // Browser를 띄우지 않음
@@ -39,7 +40,7 @@ public class Selenium {
         // WebDriver 객체 생성
         driver = new ChromeDriver(options);
 	}
-	 
+	
 	public void login(){
 		System.out.println("[Debug] Start-login") ;
 		try {
@@ -155,3 +156,4 @@ public class Selenium {
 //			    '''
 //			driver.find_element_by_xpath('//*[@id="td_box24"]/a').click()
 }
+

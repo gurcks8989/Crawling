@@ -36,11 +36,17 @@ body{
 	font-size:20px;
 }
 
-
+#googleLogin{
+    padding: 10px;
+    background: #e0e0e0;
+}
 
 </style>
 <!-- for using google API script -->
 <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+
+<!-- content에 자신의 OAuth2.0 클라이언트ID를 넣습니다. -->
+<meta name ="google-signin-client_id" content="312316665113-ffktkoeu66githas66n2g89uik460ebr.apps.googleusercontent.com">
  
 <!-- for using naver API script -->
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
@@ -63,12 +69,12 @@ body{
 				</div>
 			</div>
 			<div class="row">
-				<div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="googleLogin">
+				<div id="googleLogin">
 					<img class="icon" alt="Google Icon" src="./img/google.png"><span> 구글 계정으로 계속하기</span>
 				</div>
 			</div>
 			<div class="row">
-				<div class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="naverIdLogin">
+				<div id="naverIdLogin">
 					<img class="icon" alt="Naver Icon" src="./img/naver.png"><span> 네이버 계정으로 계속하기</span>
 				</div>
 			</div>
@@ -78,42 +84,33 @@ body{
 	<%@ include file="/common/inc/footer.jsp"%>
 	
 <script>
-
-function onSignIn(profile, method) {
-    document.getElementById('loginApi').value = method ;
+//처음 실행하는 함수
+function init() {
+	gapi.load('auth2', function() {
+	    //Ready. Make a call to gapi.auth2.init or some other API
+		auth2 = gapi.auth2.init() ;
+	    options = new gapi.auth2.SigninOptionsBuilder();
+		options.setPrompt('select_account');
+		options.setScope('email profile openid');
+		gapi.auth2.getAuthInstance().attachClickHandler('googleLogin', options, onSignIn, onSignInFailure) ;
+	});
+}
+	
+function onSignIn(googleUser) {
+	var profile = googleUser.getBasicProfile();
+	console.log(profile) ;
+    document.getElementById('loginApi').value = "Google" ;
+    console.log(document.getElementById("loginApi").value);
     document.getElementById('userid').value = profile.getId();
     document.getElementById('username').value = profile.getName() ;
     document.getElementById('email').value = profile.getEmail() ;
     document.getElementById('loginForm').submit();
 }
 
-//처음 실행하는 함수
-function init() {
-	gapi.load('auth2', function() {
-	    //Ready. Make a call to gapi.auth2.init or some other API
-		auth2 = gapi.auth2.init({
-			client_id: '312316665113-ffktkoeu66githas66n2g89uik460ebr.apps.googleusercontent.com',
-	        // 추가는 Oauth 승인 권한 추가 후 띄어쓰기 기준으로 추가
-			scope: 'email profile openid',
-			ux_mode: 'redirect',
-			redirect_uri: 'http://localhost:8080/keyword/'
-		});
-		options = new gapi.auth2.SigninOptionsBuilder();
-		options.setPrompt('select_account');
-        // 인스턴스의 함수 호출 - element에 로그인 기능 추가
-        // GgCustomLogin은 li태그안에 있는 ID, 위에 설정한 options와 아래 성공,실패시 실행하는 함수들
-		gapi.auth2.getAuthInstance().attachClickHandler('googleLogin', options, onGoogleSignIn, connectionError);
-	})
+function onSignInFailure(t){		
+	console.log(t);
 }
 
-function onGoogleSignIn(googleUser) {
-    var profile = googleUser.getBasicProfile();
-	onSignIn(profile, 'Google') ;
-}
-
-function connectionError(e){		
-	console.log(e);
-}
 </script>
 
 <script>
@@ -142,32 +139,19 @@ window.addEventListener('load', function () {
 				naverLogin.reprompt();
 				return;
 			}
+            
+            var profile = naverLogin.user ;
 
-        	onSignIn(naverLogin.user, 'Naver') ;
-            alert(naverLogin.user.getName());
-            alert(naverLogin.user.getEmail());
+            document.getElementById('loginApi').value = "Naver" ;
+            document.getElementById('userid').value = profile.getId();
+            document.getElementById('username').value = profile.getName() ;
+            document.getElementById('email').value = profile.getEmail() ;
+            document.getElementById('loginForm').submit();
 		} else {
 			console.log("callback 처리에 실패하였습니다.");
 		}
 	});
 });
-
-
-var testPopUp;
-function openPopUp() {
-    testPopUp= window.open("https://nid.naver.com/nidlogin.logout", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,width=1,height=1");
-}
-function closePopUp(){
-    testPopUp.close();
-}
-
-function naverLogout() {
-	openPopUp();
-	setTimeout(function() {
-		closePopUp();
-		}, 1000);
-}
-
 </script>
 </body>
 </html>

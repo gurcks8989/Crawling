@@ -4,24 +4,24 @@
 <mapper namespace="com.spring.user">
 	<select id="getForm" resultType="user">
 		select 
-			#{loginApi} as login_api, 
+			#{loginApi} as loginApi, 
 			#{userid} as userid, 
 			#{username} as username, 
-			#{email} as email, 
-			#{photo} as photo
+			#{email} as email
 	</select>
 	<select id="getIdCheck" resultType="boolean">
-		select count(*)
+		select <![CDATA[0 < count(*)]]> as isExist
 		from member 
-		where login_api = #{loginApi} 
+		where loginApi = #{loginApi} 
 			and userid = #{userid}
 	</select>
 	<insert id="insertUser">
-		insert into member (login_api, userid, username, email, photo)
-		values (#{loginApi}, #{userid}, #{username}, #{email}, #{photo})
+		insert into member (loginApi, userid, username, email)
+		values (#{loginApi}, #{userid}, #{username}, #{email})
 	</insert>
 	<select id="getUSer" resultType="user">
 		select * from member 
-		where login_api=#{loginApi} and userid=#{userid}
+		where loginApi = #{loginApi} 
+			and userid = #{userid}
 	</select>
 </mapper>
