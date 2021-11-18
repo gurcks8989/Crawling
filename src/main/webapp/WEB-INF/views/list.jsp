@@ -44,7 +44,6 @@
 </script>
 </head>
 <body>
-	<%@ include file="/common/inc/userHeader.jsp"%>
 	<h1>자유게시판</h1>
 	<table id="list" width="90%">
 		<tr>

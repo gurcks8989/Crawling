@@ -4,32 +4,38 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.openqa.selenium.Alert;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+@Component
 public class Selenium {	    
 //	@Value("${hisnet.id}")
 //    public static String login_id ;
 //	
 //	@Value("${hisnet.password}")
 //    public static String login_pw ;
-    
-	public static void main(String[] args) {
-		//WebDriver 설정
-		WebDriverManager.chromedriver().setup() ;
-		Selenium selTest = new Selenium();
-		selTest.login();
-		selTest.crawling();
-	}
+
 	private WebDriver driver  ;
 	private String url;
 
 	public static String TEST_URL = "https://hisnet.handong.edu" ;
 
-	public Selenium() {
+	@Scheduled(cron = "* */5 * * * *")
+	public void testing() {
+		this.login() ;
+		this.crawling();
+		this.driver_closing() ;
+	}
+
+	public void login(){
+		WebDriverManager.chromedriver().setup() ;
+		
 		// WebDriver 옵션 설정
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");          // 최대크기로
@@ -39,9 +45,7 @@ public class Selenium {
         
         // WebDriver 객체 생성
         driver = new ChromeDriver(options);
-	}
-	
-	public void login(){
+		
 		System.out.println("[Debug] Start-login") ;
 		try {
 			driver.get(TEST_URL);
@@ -75,16 +79,15 @@ public class Selenium {
 		}
 		System.out.println("[Debug] End-login") ;
 	}
-		
-	
+
 	private void crawling() {
 		// 일반 공지
 		System.out.println("[Debug] Start-crawling") ;
         try {
             // 1. 수집 대상 URL
         	url = "https://hisnet.handong.edu/myboard/list.php?Board=NB0001" ;
-        	driver.get(url);
-            // 3. HTML 파싱.
+    		driver.get(url);	
+        	// 3. HTML 파싱.
             Document html = Jsoup.parse(driver.getPageSource()) ;
             // 4-1. Attribute 탐색
             Elements titles = html.select("body > table:nth-child(12) > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(3) > table > tbody > tr:nth-child(3) > td > table > tbody > tr:nth-child(1) > td > table > tbody > tr > td:nth-child(2)") ;
@@ -96,14 +99,19 @@ public class Selenium {
         		if(no.equals("공지"))
         			continue ;
                 System.out.println("일반공지 " + no + "번 " + title) ;
+        		System.out.println(titles.get(i).absUrl("href")) ;
         	}
         } catch (Exception e) {
         	e.printStackTrace();
-		} finally {
-			driver.close();
-		}
+        }
 		System.out.println("[Debug] End-crawling") ;
     }
+	
+	private void driver_closing() {
+		driver.close(); 
+	}
+
+	
 
 //                    
 //                Elements files = fileblock.getElementsByTag("a");

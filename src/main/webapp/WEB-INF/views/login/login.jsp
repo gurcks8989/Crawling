@@ -19,10 +19,6 @@ body{
     justify-content: center;
 }
 
-.icon{
-	width:20px ;
-}
-
 .row > div{
     display: flex;
     align-items: center;
@@ -37,7 +33,7 @@ body{
 }
 
 #googleLogin{
-    padding: 10px;
+    padding: 4px;
     background: #e0e0e0;
 }
 
@@ -70,7 +66,9 @@ body{
 			</div>
 			<div class="row">
 				<div id="googleLogin">
-					<img class="icon" alt="Google Icon" src="./img/google.png"><span> 구글 계정으로 계속하기</span>
+					<a id="googleLogin_loginButton" href="javascript:void(0)">
+						<img class="icon" alt="Google Icon" src="./img/google.png" height="40" width="auto"><span> 구글 계정으로 계속하기</span>
+					</a>
 				</div>
 			</div>
 			<div class="row">
