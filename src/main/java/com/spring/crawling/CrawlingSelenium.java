@@ -5,22 +5,23 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.openqa.selenium.Alert;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-@Component
-public class Selenium {
-//	@Value("${hisnet.id}")
-//    public static String login_id ;
-//	
-//	@Value("${hisnet.password}")
-//    public static String login_pw ;
+public class CrawlingSelenium {
+//    @Value("${hisnet.id}")
+//    public String login_id;
+// 
+//    @Value("${hisnet.password}")
+//    public String login_pw;
+	
 	private Map<String, String> crawling_urls = Stream.of(new String[][] { 
 					{ "일반공지", "https://hisnet.handong.edu/myboard/list.php?Board=NB0001" },
 					{ "글로벌리더쉽", "https://hisnet.handong.edu/myboard/list.php?Board=B0020" },
@@ -43,6 +44,9 @@ public class Selenium {
 			.collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
 	private WebDriver driver;
+
+	@Autowired
+	CrawlingService crawilngService;
 
 	public static String TEST_URL = "https://hisnet.handong.edu";
 
@@ -75,7 +79,7 @@ public class Selenium {
 
 			// switch Frame to MainFrame
 			driver.switchTo().frame("MainFrame");
-
+			
 			driver.findElement(By.name("id")).sendKeys("gurcks8989");
 			Thread.sleep(500);
 			driver.findElement(By.name("password")).sendKeys("zxc123");
@@ -114,9 +118,20 @@ public class Selenium {
 				if (no.equals("No") || no.equals("공지") || no.equals("") || no.isEmpty())
 					continue;
 				String title = el.findElement(By.xpath("td[2]")).getText().trim();
-
+				String link = el.findElement(By.xpath("td[2]/a")).getAttribute("href") ;
+				
+				CrawlingVO vo = new CrawlingVO() ;
+				vo.setCategory(entry.getKey()) ;
+				vo.setNoticeNum(no) ;
+				vo.setTitle(title) ;
+				vo.setLink(link) ;
+				try{
+					crawilngService.insertNotice(vo) ;
+				} catch(NullPointerException e) {
+					vo = new CrawlingVO();
+				}
 				System.out.println(entry.getKey() + " " + no + "번 " + title);
-				System.out.println(el.findElement(By.xpath("td[2]/a")).getAttribute("href"));
+				System.out.println(link);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

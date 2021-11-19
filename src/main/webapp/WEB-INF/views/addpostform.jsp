@@ -1,4 +1,3 @@
-
 <%@ include file="/common/inc/common.jsp"%>
 <html>
 <head>

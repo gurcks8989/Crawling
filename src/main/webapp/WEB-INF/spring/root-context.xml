@@ -14,7 +14,7 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 	
-	<bean id="scheduleService" class="com.spring.crawling.Selenium" />
+	<bean id="scheduleService" class="com.spring.crawling.CrawlingSelenium" />
 	<task:scheduler id="gsScheduler" pool-size="10" />
 	<task:executor id="gsTaskExecutor" pool-size="10" />
 	<task:annotation-driven executor="gsTaskExecutor" />
@@ -37,13 +37,11 @@
 		<property name="username" value="${db.username}"/>
 		<property name="password" value="${db.password}"/>
 	</bean>
-	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
 		<property name="mapperLocations" value="classpath:mappers/*-mapper.xml"/>		
 	</bean>
-
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
