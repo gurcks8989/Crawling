@@ -38,7 +38,6 @@ public class UserDAO {  //spring.user에 있는 user랑 다르니까 헷갈림 �
 		return userVo;
 	} 
 			
-	
 	public DriverManagerDataSource dataSource() { 
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("org.mariadb.jdbc.Driver");
