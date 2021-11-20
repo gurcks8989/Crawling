@@ -4,11 +4,10 @@ import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
-@Service
 public class CrawlingServiceImpl implements CrawlingService{
 
-	@Inject
-	CrawlingDAO crawlingDAO ;
+	
+	CrawlingDAO crawlingDAO = new CrawlingDAO();
 	
 	@Override
 	public int insertNotice(CrawlingVO vo) {

@@ -45,8 +45,9 @@ public class CrawlingSelenium {
 
 	private WebDriver driver;
 
-	@Autowired
-	CrawlingService crawilngService;
+	
+	
+	CrawlingServiceImpl crawilngService= new CrawlingServiceImpl();
 
 	public static String TEST_URL = "https://hisnet.handong.edu";
 
