@@ -7,4 +7,7 @@
 		where loginApi = #{loginApi} 
 			and userid = #{userid}
 	</select>
+	<select id="getUserAll" resultType="com.spring.crawling.UserVO">
+		select * from member 
+	</select>
 </mapper>

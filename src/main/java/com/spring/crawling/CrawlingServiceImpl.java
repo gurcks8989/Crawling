@@ -13,6 +13,11 @@ public class CrawlingServiceImpl implements CrawlingService{
 	public int insertNotice(CrawlingVO vo) {
 		return crawlingDAO.insertNotice(vo);
 	}
+	
+	@Override
+	public List<CrawlingParamVO> getKeywordMatchedList(CrawlingParamVO crawlingParamVo){
+		return crawlingDAO.getKeywordMatchedList(crawlingParamVo) ;
+	}
 //	@Override
 //	public int deleteBoard(int seq) {
 //		return boardDAO.deleteBoard(seq) ;

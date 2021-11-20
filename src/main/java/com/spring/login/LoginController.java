@@ -11,11 +11,9 @@ import com.spring.user.UserVO;
 
 @Controller
 public class LoginController {
-
 	@Autowired
 	UserServiceImpl service;
 	
-
 	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String login(Model model,HttpSession session) {
 		return "login/login";

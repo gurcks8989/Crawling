@@ -10,7 +10,9 @@ import com.spring.crawling.CrawlingDAO;
 @Service
 public class UserServiceImpl{
 
-	UserDAO userDAO = new UserDAO();
+	
+	@Autowired
+	UserDAO userDAO;
 
 	public UserVO getForm(UserVO vo) {
 		return userDAO.getForm(vo) ;

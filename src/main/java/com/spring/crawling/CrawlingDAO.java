@@ -1,5 +1,6 @@
 package com.spring.crawling;
 
+import java.util.ArrayList;
 //import java.sql.ResultSet;
 import java.util.List;
 
@@ -25,7 +26,24 @@ public class CrawlingDAO {
 			return result ;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			System.out.print("[Exist]\t");
+			System.out.println("[Exist]\t" + vo.getCategory() + "category");
+		}
+		finally {
+			if (sqlSession!=null)	sqlSession.close();
+		}
+		return result ;
+	}
+	
+	public List<CrawlingParamVO> getKeywordMatchedList(CrawlingParamVO crawlingParamVo) {
+		SqlSession sqlSession = null;
+		List<CrawlingParamVO> result = null ;
+		try {
+			sqlSession = sqlSessionFactory().openSession();
+			result = sqlSession.selectList("com.spring.crawling.getKeywordMatchedList", crawlingParamVo) ;
+			return result ;
+		} catch (Exception e) {
+			System.out.println("[Don't Find]\t" + crawlingParamVo.getTitle());
+			// TODO Auto-generated catch block
 		}
 		finally {
 			if (sqlSession!=null)	sqlSession.close();

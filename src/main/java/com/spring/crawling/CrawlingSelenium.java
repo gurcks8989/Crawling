@@ -8,6 +8,12 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.openqa.selenium.Alert;
+
+import java.sql.Timestamp;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,6 +27,7 @@ public class CrawlingSelenium {
 // 
 //    @Value("${hisnet.password}")
 //    public String login_pw;
+	public List<CrawlingParamVO> targetList = new ArrayList<CrawlingParamVO>() ;
 	
 	private Map<String, String> crawling_urls = Stream.of(new String[][] { 
 					{ "일반공지", "https://hisnet.handong.edu/myboard/list.php?Board=NB0001" },
@@ -45,10 +52,10 @@ public class CrawlingSelenium {
 
 	private WebDriver driver;
 
-	CrawlingService crawilngService= new CrawlingServiceImpl();
+	CrawlingService crawlingService= new CrawlingServiceImpl();
 	UserServiceImpl	userService = new UserServiceImpl(); // user db 접속을 위한 쿼리문 클래스
 	
-	/* UserVO userVo = new UserVO(); user db 접속 예시를 위한 user 빈 생성*/
+	UserVO userVo = new UserVO(); //user db 접속 예시를 위한 user 빈 생성
 	public static String TEST_URL = "https://hisnet.handong.edu";
 
 //	@Scheduled(cron = "* */5 * * * *")
@@ -58,6 +65,9 @@ public class CrawlingSelenium {
 		for (Map.Entry<String, String> entry : crawling_urls.entrySet()) {
 			crawling(entry);
 		}
+		findKeyword() ;
+		//TODO
+
 		driver_closing();
 	}
 
@@ -127,10 +137,11 @@ public class CrawlingSelenium {
 				vo.setTitle(title) ;
 				vo.setLink(link) ;
 				try{
-					crawilngService.insertNotice(vo) ;
-					/* userService.getUser(userVo);  user db 접속 예시*/
+					if(crawlingService.insertNotice(vo) == 0)
+						break ;
+					//userService.getUser(userVo); // user db 접속 예시
 				} catch(NullPointerException e) {
-					vo = new CrawlingVO();
+					vo = new CrawlingVO() ;
 				}
 				System.out.println(entry.getKey() + " " + no + "번 " + title);
 				System.out.println(link);
@@ -139,6 +150,41 @@ public class CrawlingSelenium {
 			e.printStackTrace();
 		}
 		System.out.println("[Debug] End-crawling");
+	}
+	
+	private void findKeyword() {
+		System.out.println("[Debug] Start-findKeyword");
+		Calendar cal = Calendar.getInstance() ;
+		cal.add(Calendar.MINUTE, -180);
+		Timestamp currTime = new Timestamp(cal.getTimeInMillis()) ;
+
+		List<UserVO> userList= new ArrayList<UserVO>() ;
+
+		try {
+			userList = userService.getUserAll() ;
+
+			for(UserVO user : userList) {
+				CrawlingParamVO crawlingParamVo = new CrawlingParamVO() ;
+				crawlingParamVo.setCtime(currTime);
+				crawlingParamVo.setUserid(user.getUserid());
+				crawlingParamVo.setUsername(user.getUsername());
+				crawlingParamVo.setEmail(user.getEmail());
+				crawlingParamVo.setUserid(user.getUserid());
+				crawlingParamVo.setKeyword1(user.getKeyword1());
+				crawlingParamVo.setKeyword2(user.getKeyword2());
+				crawlingParamVo.setKeyword3(user.getKeyword3());
+				crawlingParamVo.setKeyword4(user.getKeyword4());
+				crawlingParamVo.setKeyword5(user.getKeyword5());
+				try {
+					targetList.addAll(crawlingService.getKeywordMatchedList(crawlingParamVo)) ;
+				} catch (Exception e) {
+					// Continue
+				}
+			}
+		} catch (Exception e) {
+//			e.printStackTrace();
+		}
+		System.out.println("[Debug] End-findKeyword");
 	}
 
 	private void driver_closing() {
