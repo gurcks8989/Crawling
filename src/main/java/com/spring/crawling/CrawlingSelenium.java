@@ -7,16 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-
-import com.spring.user.UserServiceImpl;
-import com.spring.user.UserVO;
-
 import org.openqa.selenium.Alert;
-
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -54,24 +45,19 @@ public class CrawlingSelenium {
 
 	private WebDriver driver;
 
-
-	@Autowired
-	UserServiceImpl userService;
+	CrawlingService crawilngService= new CrawlingServiceImpl();
+	UserServiceImpl	userService = new UserServiceImpl(); // user db 접속을 위한 쿼리문 클래스
 	
-	CrawlingServiceImpl crawilngService= new CrawlingServiceImpl();
-
+	/* UserVO userVo = new UserVO(); user db 접속 예시를 위한 user 빈 생성*/
 	public static String TEST_URL = "https://hisnet.handong.edu";
 
 //	@Scheduled(cron = "* */5 * * * *")
 	@Scheduled(cron = "*/30 * * * * *")
 	public void testing() {
 		login();
-//		for (Map.Entry<String, String> entry : crawling_urls.entrySet()) {
-//			crawling(entry);
-//		}
-		findKeyword() ;
-		//TODO
-		
+		for (Map.Entry<String, String> entry : crawling_urls.entrySet()) {
+			crawling(entry);
+		}
 		driver_closing();
 	}
 
@@ -140,9 +126,10 @@ public class CrawlingSelenium {
 				vo.setNoticeNum(no) ;
 				vo.setTitle(title) ;
 				vo.setLink(link) ;
-				try {
+				try{
 					crawilngService.insertNotice(vo) ;
-				} catch (NullPointerException e) {
+					/* userService.getUser(userVo);  user db 접속 예시*/
+				} catch(NullPointerException e) {
 					vo = new CrawlingVO();
 				}
 				System.out.println(entry.getKey() + " " + no + "번 " + title);
@@ -152,66 +139,6 @@ public class CrawlingSelenium {
 			e.printStackTrace();
 		}
 		System.out.println("[Debug] End-crawling");
-	}
-
-	private void findKeyword() {
-		System.out.println("[Debug] Start-findKeyword");
-		Calendar cal = Calendar.getInstance() ;
-		Timestamp currTime = new Timestamp(cal.getTimeInMillis()) ;
-	
-		CrawlingVO vo = new CrawlingVO() ;
-		List<UserVO> userList= new ArrayList<UserVO>() ;
-		
-		vo.setCtime(currTime);
-		
-//		try {
-			userList = userService.getUserAll() ;
-			
-			for(UserVO user : userList) {
-				List<String> keywords = new ArrayList<String>() ;
-				if(user.getKeyword1() != null && user.getKeyword1() != "")
-					keywords.add(user.getKeyword1()) ;
-				if(user.getKeyword2() != null && user.getKeyword2() != "")
-					keywords.add(user.getKeyword2()) ;
-				if(user.getKeyword3() != null && user.getKeyword3() != "")
-					keywords.add(user.getKeyword3()) ;
-				if(user.getKeyword4() != null && user.getKeyword4() != "")
-					keywords.add(user.getKeyword4()) ;
-				if(user.getKeyword5() != null && user.getKeyword5() != "")
-					keywords.add(user.getKeyword5()) ;
-				System.out.println(keywords) ;
-			}
-//			try {
-//				crawilngService.insertNotice(vo) ;
-//			} catch (NullPointerException e) {
-//				vo = new CrawlingVO();
-//			}
-//			driver.get(entry.getValue());
-//			List<WebElement> lines = driver.findElements(By.xpath("/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[3]/td/table/tbody/tr[1]/td/table/tbody/tr"));
-//			for (WebElement el : lines) {
-//				String no = el.findElement(By.xpath("td[1]")).getText().trim();
-//				if (no.equals("No") || no.equals("공지") || no.equals("") || no.isEmpty())
-//					continue;
-//				String title = el.findElement(By.xpath("td[2]")).getText().trim();
-//				String link = el.findElement(By.xpath("td[2]/a")).getAttribute("href") ;
-//				
-//				CrawlingVO vo = new CrawlingVO() ;
-//				vo.setCategory(entry.getKey()) ;
-//				vo.setNoticeNum(no) ;
-//				vo.setTitle(title) ;
-//				vo.setLink(link) ;
-//				try {
-//					crawilngService.insertNotice(vo) ;
-//				} catch (NullPointerException e) {
-//					vo = new CrawlingVO();
-//				}
-//				System.out.println(entry.getKey() + " " + no + "번 " + title);
-//				System.out.println(link);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-		System.out.println("[Debug] End-findKeyword");
 	}
 
 	private void driver_closing() {
