@@ -2,7 +2,8 @@ package com.spring.crawling;
 
 import java.sql.Timestamp;
 
-public class CrawlingVO {
+
+public class CrawlingParamVO extends UserVO{
 	private String category;
 	private String noticeNum;
 	private String title;

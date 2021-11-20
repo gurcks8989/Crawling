@@ -3,14 +3,38 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.crawling">
 <!-- SELECT -->
-	<select id="getKeywordMatchedList" resultType = "crawling">
-		SELECT * 
+	<select id="getKeywordMatchedList" resultType = "com.spring.crawling.CrawlingParamVO">
+		SELECT *
+			, #{userid} as userid
+			, #{username} as username
+			, #{email} as email
+			, #{keyword1} as keyword1
+			, #{keyword2} as keyword2
+			, #{keyword3} as keyword3
+			, #{keyword4} as keyword4
+			, #{keyword5} as keyword5
+			
 		FROM notice
 		WHERE 
-		<foreach collection="keywors" item="iter" separator="OR">
-			title LIKE UPPER(%#{iter}%)
-		</foreach>
-			true
+			ctime > DATE_ADD(NOW(),INTERVAL -6 MINUTE)
+		AND (
+			<if test="keyword1 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword1}), '%') OR
+			</if>
+			<if test="keyword2 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword2}), '%') OR
+			</if>
+			<if test="keyword3 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword3}), '%') OR
+			</if>
+			<if test="keyword4 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword4}), '%') OR
+			</if>
+			<if test="keyword5 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword5}), '%') OR
+			</if>
+				false
+			) 
 	</select>
 <!-- INSERT -->
 	<insert id="insertNotice">

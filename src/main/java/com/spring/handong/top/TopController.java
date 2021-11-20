@@ -17,5 +17,4 @@ public class TopController {
 		
 		return "top/main";
 	}
-	
 }
