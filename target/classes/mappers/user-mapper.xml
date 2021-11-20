@@ -19,9 +19,12 @@
 		insert into member (loginApi, userid, username, email)
 		values (#{loginApi}, #{userid}, #{username}, #{email})
 	</insert>
-	<select id="getUSer" resultType="user">
+	<select id="getUser" resultType="user">
 		select * from member 
 		where loginApi = #{loginApi} 
 			and userid = #{userid}
+	</select>
+	<select id="getUserAll" resultType="user">
+		select * from member 
 	</select>
 </mapper>

@@ -1,8 +1,13 @@
 package com.spring.user;
 
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired; 
 import org.springframework.stereotype.Repository;
+
+import com.spring.crawling.CrawlingVO;
 
 @Repository
 public class UserDAO {
@@ -23,7 +28,9 @@ public class UserDAO {
 	}
 		
 	public UserVO getUser(UserVO vo) {
-		return sqlSession.selectOne("com.spring.user.getUSer", vo);	
+		return sqlSession.selectOne("com.spring.user.getUser", vo);	
 	}
-	
+	public List<UserVO> getUserAll() {
+		return sqlSession.selectList("com.spring.user.getUser");	
+	}
 }

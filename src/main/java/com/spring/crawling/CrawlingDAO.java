@@ -6,25 +6,11 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
-import org.springframework.stereotype.Component;
 //import java.sql.SQLException;
 //import org.springframework.jdbc.core.JdbcTemplate;
 //import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class CrawlingDAO {
@@ -35,10 +21,11 @@ public class CrawlingDAO {
 		try {
 			sqlSession = sqlSessionFactory().openSession();
 			result = sqlSession.insert("com.spring.crawling.insertNotice", vo);
+			System.out.print("[First]\t");
 			return result ;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.print("[Exist]\t");
 		}
 		finally {
 			if (sqlSession!=null)	sqlSession.close();

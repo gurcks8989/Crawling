@@ -1,13 +1,16 @@
 package com.spring.user;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.spring.crawling.CrawlingDAO;
 
 @Service
 public class UserServiceImpl{
 
-	@Autowired
-	UserDAO userDAO ;
+	UserDAO userDAO = new UserDAO();
 
 	public UserVO getForm(UserVO vo) {
 		return userDAO.getForm(vo) ;
@@ -21,7 +24,11 @@ public class UserServiceImpl{
 		return userDAO.insertUser(vo) ; 	
 	}
 
-	public UserVO getUSer(UserVO vo) {
+	public UserVO getUser(UserVO vo) {
 		return userDAO.getUser(vo) ;
+	}
+	
+	public List<UserVO> getUserAll() {
+		return userDAO.getUserAll() ;
 	}
 }

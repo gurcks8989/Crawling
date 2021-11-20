@@ -42,7 +42,7 @@ public class LoginController {
 			if(!service.getIdCheck(vo))
 				service.insertUser(vo) ;
 			
-			UserVO loginvo = service.getUSer(vo) ;
+			UserVO loginvo = service.getUser(vo) ;
 
 			if(loginvo != null) { 	//login success
 				System.out.println("login success!") ;
