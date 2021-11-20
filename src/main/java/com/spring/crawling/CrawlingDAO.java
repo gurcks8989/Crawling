@@ -4,6 +4,8 @@ import java.util.ArrayList;
 //import java.sql.ResultSet;
 import java.util.List;
 
+
+
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -40,6 +42,7 @@ public class CrawlingDAO {
 		try {
 			sqlSession = sqlSessionFactory().openSession();
 			result = sqlSession.selectList("com.spring.crawling.getKeywordMatchedList", crawlingParamVo) ;
+			System.out.println(result.size());
 			return result ;
 		} catch (Exception e) {
 			System.out.println("[Don't Find]\t" + crawlingParamVo.getTitle());

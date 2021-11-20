@@ -9,6 +9,8 @@ public class CrawlingServiceImpl implements CrawlingService{
 	
 	CrawlingDAO crawlingDAO = new CrawlingDAO();
 	
+	
+	
 	@Override
 	public int insertNotice(CrawlingVO vo) {
 		return crawlingDAO.insertNotice(vo);

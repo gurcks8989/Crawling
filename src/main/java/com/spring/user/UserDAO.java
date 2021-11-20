@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.crawling.CrawlingVO;
 
+
+
 @Repository
 public class UserDAO {
 
@@ -32,5 +34,13 @@ public class UserDAO {
 	}
 	public List<UserVO> getUserAll() {
 		return sqlSession.selectList("com.spring.user.getUser");	
+	}
+
+	public int updateUser(UserVO vo) {
+		return sqlSession.update("com.spring.user.updateUser",vo);
+	}
+
+	public List<CrawlingVO> getNotice(UserVO uservo) {
+		return sqlSession.selectList("com.spring.user.getNotice",uservo);
 	}
 }

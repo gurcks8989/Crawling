@@ -19,12 +19,60 @@
 		insert into member (loginApi, userid, username, email)
 		values (#{loginApi}, #{userid}, #{username}, #{email})
 	</insert>
-	<select id="getUser" resultType="user">
+	<select id="getUser" resultType="com.spring.user.UserVO">
 		select * from member 
 		where loginApi = #{loginApi} 
 			and userid = #{userid}
 	</select>
+	
+	
+	<select id="getNotice" resultType = "com.spring.crawling.CrawlingVO">
+		SELECT *
+		FROM notice
+		where 
+			<if test="keyword1 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword1}), '%') OR
+			</if>
+			<if test="keyword2 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword2}), '%') OR
+			</if>
+			<if test="keyword3 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword3}), '%') OR
+			</if>
+			<if test="keyword4 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword4}), '%') OR
+			</if>
+			<if test="keyword5 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword5}), '%') OR
+			</if>
+				false
+			 
+	</select>
 	<select id="getUserAll" resultType="user">
 		select * from member 
 	</select>
+	<update id="updateUser" parameterType="user">
+		UPDATE member
+		SET  <choose>
+			<when test="keyword1 != null">
+				keyword1 = #{keyword1}
+			</when>
+			<when test="keyword2 != null">
+				keyword2 = #{keyword1}
+			</when>
+			<when test="keyword3 != null">
+				keyword3 = #{keyword1}
+			</when>
+			<when test="keyword4 != null">
+				keyword4 = #{keyword1}
+			</when>
+			<when test="keyword5 != null">
+				keyword5 = #{keyword1}
+			</when>
+			<otherwise>
+				keyword1 = #{keyword1}
+			</otherwise>
+		</choose>
+		WHERE userid = #{userid}	
+	</update>
 </mapper>

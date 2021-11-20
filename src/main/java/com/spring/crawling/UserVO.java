@@ -10,7 +10,6 @@ public class UserVO {
 	private String keyword3;
 	private String keyword4;
 	private String keyword5;
-
 	
 	public String getLoginApi() {
 		return loginApi;

@@ -10,6 +10,8 @@ public class CrawlingVO {
 	private String link;
 	private Timestamp ctime;
 	
+	
+	
 	public int getSeq() {
 		return seq;
 	}
