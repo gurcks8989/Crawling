@@ -40,7 +40,6 @@ public class CrawlingDAO {
 		try {
 			sqlSession = sqlSessionFactory().openSession();
 			result = sqlSession.selectList("com.spring.crawling.getKeywordMatchedList", crawlingParamVo) ;
-			System.out.println(result.size());
 			return result ;
 		} catch (Exception e) {
 			System.out.println("[Don't Find]\t" + crawlingParamVo.getTitle());

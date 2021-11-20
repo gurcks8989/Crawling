@@ -10,6 +10,7 @@ import com.spring.crawling.CrawlingDAO;
 @Service
 public class UserServiceImpl{
 
+	
 	@Autowired
 	UserDAO userDAO;
 

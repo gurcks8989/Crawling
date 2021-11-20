@@ -8,7 +8,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.openqa.selenium.Alert;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.sql.Timestamp;
 import java.util.AbstractMap;
@@ -17,7 +16,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,7 +28,6 @@ public class CrawlingSelenium {
 //    @Value("${hisnet.password}")
 //    public String login_pw;
 	public List<CrawlingParamVO> targetList = new ArrayList<CrawlingParamVO>() ;
-	
 	
 	private Map<String, String> crawling_urls = Stream.of(new String[][] { 
 					{ "일반공지", "https://hisnet.handong.edu/myboard/list.php?Board=NB0001" },
@@ -57,7 +54,6 @@ public class CrawlingSelenium {
 
 	CrawlingService crawlingService= new CrawlingServiceImpl();
 	UserServiceImpl	userService = new UserServiceImpl(); // user db 접속을 위한 쿼리문 클래스
-	EmailServiceImpl emailService = new EmailServiceImpl();
 	
 	UserVO userVo = new UserVO(); //user db 접속 예시를 위한 user 빈 생성
 	public static String TEST_URL = "https://hisnet.handong.edu";
@@ -166,40 +162,26 @@ public class CrawlingSelenium {
 
 		try {
 			userList = userService.getUserAll() ;
-			System.out.println("user size : "+userList.size());
-			for(int i=0;i<userList.size();i++) {
-				System.out.println(userList.get(i).getEmail());
-				System.out.println(userList.get(i).getUsername());
-			}
-			for(int j=0; j<userList.size();j++) {
-				System.out.println("now user : "+userList.get(j).getUsername());
+
+			for(UserVO user : userList) {
 				CrawlingParamVO crawlingParamVo = new CrawlingParamVO() ;
 				crawlingParamVo.setCtime(currTime);
-				crawlingParamVo.setUserid(userList.get(j).getUserid());
-				crawlingParamVo.setUsername(userList.get(j).getUsername());
-				crawlingParamVo.setEmail(userList.get(j).getEmail());
-				crawlingParamVo.setUserid(userList.get(j).getUserid());
-				crawlingParamVo.setKeyword1(userList.get(j).getKeyword1());
-				crawlingParamVo.setKeyword2(userList.get(j).getKeyword2());
-				crawlingParamVo.setKeyword3(userList.get(j).getKeyword3());
-				crawlingParamVo.setKeyword4(userList.get(j).getKeyword4());
-				crawlingParamVo.setKeyword5(userList.get(j).getKeyword5());
-				
-				System.out.println("Start find keyword");
-				targetList=crawlingService.getKeywordMatchedList(crawlingParamVo) ;
-				System.out.println("number of notice : "+ targetList.size());
-				for(int i=0;i<targetList.size();i++) {
-					System.out.println(targetList.get(i).getEmail());
-					System.out.println(targetList.get(i).getUsername());	
-					System.out.println(targetList.get(i).getTitle());
+				crawlingParamVo.setUserid(user.getUserid());
+				crawlingParamVo.setUsername(user.getUsername());
+				crawlingParamVo.setEmail(user.getEmail());
+				crawlingParamVo.setUserid(user.getUserid());
+				crawlingParamVo.setKeyword1(user.getKeyword1());
+				crawlingParamVo.setKeyword2(user.getKeyword2());
+				crawlingParamVo.setKeyword3(user.getKeyword3());
+				crawlingParamVo.setKeyword4(user.getKeyword4());
+				crawlingParamVo.setKeyword5(user.getKeyword5());
+				try {
+					targetList.addAll(crawlingService.getKeywordMatchedList(crawlingParamVo)) ;
+				} catch (Exception e) {
+					// Continue
 				}
-				if(targetList.size()!=0) {
-					System.out.println("start email");
-					emailService.sendMail(targetList);
-				}
-				
-			} 
-		}catch (Exception e) {
+			}
+		} catch (Exception e) {
 //			e.printStackTrace();
 		}
 		System.out.println("[Debug] End-findKeyword");
@@ -208,5 +190,4 @@ public class CrawlingSelenium {
 	private void driver_closing() {
 		driver.close();
 	}
-	
 }
