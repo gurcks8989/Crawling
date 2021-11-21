@@ -91,17 +91,49 @@
             </div>
         </div>
     </nav>
-
-    <div class="container mt-3">
+     <div class="container mt-3">
         <form role="form" action = "/keyword/handong/insert" method="get">
             <div class="row">    			
                 <div class="col-sm-1">
-                    <input type="submit" class="btn btn-outline-secondary" value="+">
+                    <input type="submit" class="btn btn-outline-secondary" value="키워드 추가">
             	</div>
         	</div>
         </form>
     </div>
-
+      <div class="container mt-3">
+            <ul class="nav nav-tabs nav-justified">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">현재 키워드</a>
+                </li>
+            </ul>
+        </div>
+        
+	<div class="container mt-3">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>keyword 1</th>
+                        <th>keyword 2</th>
+                        <th>keyword 3</th>
+                        <th>keyword 4</th>
+                        <th>keyword 5</th>
+                    </tr>
+                </thead>
+                <tbody>
+                         <tr>
+                            <td>${uservo.username}</td>
+ 							<td>${uservo.keyword1}</td>
+ 							<td>${uservo.keyword2}</td>
+ 							<td>${uservo.keyword3}</td>
+ 							<td>${uservo.keyword4}</td>
+ 							<td>${uservo.keyword5}</td>
+                         </tr>
+                  
+                </tbody>
+            </table>
+        </div>
+ 
         <div class="container mt-3">
             <ul class="nav nav-tabs nav-justified">
                 <li class="nav-item">

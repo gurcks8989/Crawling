@@ -26,6 +26,7 @@ public class TopController {
 
 	@Autowired
 	UserServiceImpl service;
+
 	
 	@RequestMapping(value = "/handong", method = RequestMethod.GET)
 	public String main(HttpSession session,Locale locale, Model model) {

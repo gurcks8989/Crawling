@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Board">
+	<insert id="insertBoard">
+		insert into BOARD (title, writer, content, category) 
+		values (#{title}, #{writer}, #{content}, #{category})
+	</insert>
+	<update id="updateBoard">
+		update BOARD set title = #{title}, writer = #{writer}, 
+		content = #{content}, category = #{category} where seq = #{seq}) 
+	</update>
+	<delete id="deleteBoard">
+		delete from BOARD where seq = #{seq}
+	</delete>
+	<select id="getBoard" resultType = "board">
+		select * from board where seq = #{seq}
+	</select>
+	<!-- SQL문에 특수문자 <, > 등의 기호를 사용할 때, xml에 의해서 연산자로 처리되는 것을 막기 위함
+	CDATA Section 내의 구분은 XML parser가 해석하지 않음
+	 
+	<select id="getBoard" resultType = "board">
+	<![CDATA[
+		select * from BOARD
+		where seq = #{seq}
+	]]>
+	</select>
+	 -->
+	<select id="getBoardList" resultType = "board">
+		select * from board order by seq desc
+	</select>
+</mapper>

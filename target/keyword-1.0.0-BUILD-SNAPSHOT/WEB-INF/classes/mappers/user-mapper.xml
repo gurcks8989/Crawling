@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.user">
+	<select id="getForm" resultType="user">
+		select 
+			#{loginApi} as loginApi, 
+			#{userid} as userid, 
+			#{username} as username, 
+			#{email} as email
+	</select>
+	<select id="getIdCheck" resultType="boolean">
+		select <![CDATA[0 < count(*)]]> as isExist
+		from member 
+		where loginApi = #{loginApi} 
+			and userid = #{userid}
+	</select>
+	<insert id="insertUser">
+		insert into member (loginApi, userid, username, email)
+		values (#{loginApi}, #{userid}, #{username}, #{email})
+	</insert>
+	<select id="getUser" resultType="com.spring.user.UserVO">
+		select * from member 
+		where loginApi = #{loginApi} 
+			and userid = #{userid}
+	</select>
+	
+	<select id="getNotice" resultType = "com.spring.crawling.CrawlingVO">
+		SELECT *
+		FROM notice
+		where 
+			<if test="keyword1 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword1}), '%') OR
+			</if>
+			<if test="keyword2 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword2}), '%') OR
+			</if>
+			<if test="keyword3 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword3}), '%') OR
+			</if>
+			<if test="keyword4 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword4}), '%') OR
+			</if>
+			<if test="keyword5 != null">
+				UPPER(title) like CONCAT('%', UPPER(#{keyword5}), '%') OR
+			</if>
+				false
+			 
+	</select>
+	<select id="getUserAll" resultType="user">
+		select * from member 
+	</select>
+	<update id="updateUser" parameterType="user">
+		UPDATE member
+		SET 
+	
+				keyword1 = #{keyword1},
+	
+				keyword2 = #{keyword2},
+		
+				keyword3 = #{keyword3},
+			
+				keyword4 = #{keyword4},
+			
+				keyword5 = #{keyword5}
+				
+		WHERE userid = #{userid}	
+	</update>
+</mapper>
