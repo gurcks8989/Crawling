@@ -12,7 +12,6 @@ public class UserVO {
 	private String keyword5;
 	
 	
-	
 	public String getLoginApi() {
 		return loginApi;
 	}

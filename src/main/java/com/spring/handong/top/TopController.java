@@ -34,7 +34,61 @@ public class TopController {
 		uservo.setUserid(((UserVO)session.getAttribute("login")).getUserid());
 		uservo.setLoginApi(((UserVO)session.getAttribute("login")).getLoginApi());
 		uservo=service.getUser(uservo);
+		
 		System.out.println("keyword 1 : "+uservo.getKeyword1());
+		System.out.println("keyword 2 : "+uservo.getKeyword2());
+		System.out.println("keyword 3 : "+uservo.getKeyword3());
+		System.out.println("keyword 4 : "+uservo.getKeyword4());
+		System.out.println("keyword 5 : "+uservo.getKeyword5());
+		
+		noticeList=service.getNotice(uservo);
+		model.addAttribute("noticeList",noticeList);
+		model.addAttribute("uservo",uservo);
+		
+		System.out.println("num : "+noticeList.size());
+		for(int i=0;i<noticeList.size();i++) {
+			System.out.println(noticeList.get(i).getTitle());
+		}
+		
+		return "top/main";
+	}
+	
+	@RequestMapping(value = "/handong/insert_ok", method = RequestMethod.GET)
+	public String insert_ok(HttpSession session, UserVO uservo,Locale locale, Model model) {
+		UserVO selectUserVO = new UserVO();
+		
+		System.out.println(uservo.getKeyword1());
+		
+		uservo.setUserid(((UserVO)session.getAttribute("login")).getUserid());
+		uservo.setLoginApi(((UserVO)session.getAttribute("login")).getLoginApi());
+		
+		selectUserVO =service.getUser(uservo);
+		
+		System.out.println("keyword 1 : "+uservo.getKeyword1());
+		System.out.println("keyword 2 : "+uservo.getKeyword2());
+		System.out.println("keyword 3 : "+uservo.getKeyword3());
+		System.out.println("keyword 4 : "+uservo.getKeyword4());
+		System.out.println("keyword 5 : "+uservo.getKeyword5());
+	
+		if (selectUserVO.getKeyword1() == null)	selectUserVO.setKeyword1(uservo.getKeyword1());
+		else if (selectUserVO.getKeyword2() == null)	selectUserVO.setKeyword2(uservo.getKeyword1());
+		else if (selectUserVO.getKeyword3() == null)	selectUserVO.setKeyword3(uservo.getKeyword1());
+		else if (selectUserVO.getKeyword4() == null)	selectUserVO.setKeyword4(uservo.getKeyword1());
+		else if (selectUserVO.getKeyword5() == null)	selectUserVO.setKeyword5(uservo.getKeyword1());
+		else selectUserVO.setKeyword1(uservo.getKeyword1());
+		
+		service.updateUser(selectUserVO);
+		
+		List<CrawlingVO> noticeList = new ArrayList<CrawlingVO>();
+		uservo.setUserid(((UserVO)session.getAttribute("login")).getUserid());
+		uservo.setLoginApi(((UserVO)session.getAttribute("login")).getLoginApi());
+		uservo=service.getUser(uservo);
+		
+		System.out.println("keyword 1 : "+uservo.getKeyword1());
+		System.out.println("keyword 2 : "+uservo.getKeyword2());
+		System.out.println("keyword 3 : "+uservo.getKeyword3());
+		System.out.println("keyword 4 : "+uservo.getKeyword4());
+		System.out.println("keyword 5 : "+uservo.getKeyword5());
 		
 		noticeList=service.getNotice(uservo);
 		model.addAttribute("noticeList",noticeList);
@@ -50,12 +104,7 @@ public class TopController {
 	
 	@RequestMapping(value = "/handong/insert", method = RequestMethod.GET)
 	public String insert(HttpSession session, UserVO uservo) {
-		
-		System.out.println(uservo.getKeyword1());
-		
-		uservo.setUserid(((UserVO)session.getAttribute("login")).getUserid());
-		service.updateUser(uservo);
-		
+
 		return "top/insert";
 	}
 }

@@ -25,7 +25,6 @@
 			and userid = #{userid}
 	</select>
 	
-	
 	<select id="getNotice" resultType = "com.spring.crawling.CrawlingVO">
 		SELECT *
 		FROM notice
@@ -53,26 +52,18 @@
 	</select>
 	<update id="updateUser" parameterType="user">
 		UPDATE member
-		SET  <choose>
-			<when test="keyword1 != null">
-				keyword1 = #{keyword1}
-			</when>
-			<when test="keyword2 != null">
-				keyword2 = #{keyword1}
-			</when>
-			<when test="keyword3 != null">
-				keyword3 = #{keyword1}
-			</when>
-			<when test="keyword4 != null">
-				keyword4 = #{keyword1}
-			</when>
-			<when test="keyword5 != null">
-				keyword5 = #{keyword1}
-			</when>
-			<otherwise>
-				keyword1 = #{keyword1}
-			</otherwise>
-		</choose>
+		SET 
+	
+				keyword1 = #{keyword1},
+	
+				keyword2 = #{keyword2},
+		
+				keyword3 = #{keyword3},
+			
+				keyword4 = #{keyword4},
+			
+				keyword5 = #{keyword5}
+				
 		WHERE userid = #{userid}	
 	</update>
 </mapper>
