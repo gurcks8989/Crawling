@@ -37,6 +37,8 @@ public class TopController {
 		System.out.println("keyword 1 : "+uservo.getKeyword1());
 		
 		noticeList=service.getNotice(uservo);
+		model.addAttribute("noticeList",noticeList);
+		model.addAttribute("uservo",uservo);
 		
 		System.out.println("num : "+noticeList.size());
 		for(int i=0;i<noticeList.size();i++) {

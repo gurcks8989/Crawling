@@ -69,6 +69,65 @@
 			</nav>
 		</div>
 	</form>
+	
+	
+	<table>
+                        <thead>
+                            <tr>
+                                <th>로그인 방법</th>
+                                <th>유저 id(db에서 유저 구별 용)</th>
+                                <th>이메일</th>
+                                <th>유저 이름</th>
+                                <th>키워드1</th>
+                                <th>키워드2</th>
+                                <th>키워드3</th>
+                                <th>키워드4</th>
+                                <th>키워드5</th>
+                           
+                            </tr>
+                        </thead>
+                        <tbody>
+                         <tr>
+                                <td>${uservo.loginApi}</td>
+    							<td>${uservo.userid}</td>
+    							<td>${uservo.email}</td>
+    							<td>${uservo.username}</td>
+    							<td>${uservo.keyword1}</td>
+    							<td>${uservo.keyword2}</td>
+    							<td>${uservo.keyword3}</td>
+    							<td>${uservo.keyword4}</td>
+    							<td>${uservo.keyword5}</td>
+                            </tr>
+     
+                        </tbody>
+                    </table>
+	
+	
+	
+	<table>
+                        <thead>
+                            <tr>
+                                <th>공지 번호</th>
+                                <th>제목</th>
+                                <th>링크</th>
+                                <th>카테고리</th>
+                               <th>db 등록 시간</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${noticeList}" var="CrawlingVO">
+                            <tr>
+                                <td>${CrawlingVO.noticeNum}</td>
+    							<td>${CrawlingVO.title}</td>
+    							<td>${CrawlingVO.link}</td>
+    							<td>${CrawlingVO.category}</td>
+    							<td>${CrawlingVO.ctime}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                    
 	<%@ include file="/common/inc/footer.jsp"%>
 	
 <script>
